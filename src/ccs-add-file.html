@@ -1,0 +1,44 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-add-file">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <paper-dialog id="dialog">
+      <h2>Upload new file</h2>
+
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus>Upload</paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+
+  <script>
+    class CCSAddFile extends Polymer.Element {
+      static get is() { return 'ccs-add-file'; }
+
+      static get properties() { return {
+
+      }}
+
+      static get observers() { return [
+
+      ]}
+
+      open() {
+        this.$.dialog.open();
+      }
+    }
+
+    window.customElements.define(CCSAddFile.is, CCSAddFile);
+  </script>
+</dom-module>

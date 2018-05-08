@@ -1,0 +1,30 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ccs-data">
+  <script>
+    class CCSData extends Polymer.Element {
+      static get is() { return 'ccs-data'; }
+
+      static get properties() { return {
+
+      }}
+
+      static get observers() { return [
+
+      ]}
+
+      getUser(name) {
+        return {
+          avatar: "",
+          name: "Testuser",
+          telephone: "12345",
+          email: "test@company.com",
+          location: "Building A",
+          department: "R&D"
+        }
+      }
+    }
+
+    window.customElements.define(CCSData.is, CCSData);
+  </script>
+</dom-module>

@@ -1,0 +1,31 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-404">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <h1>Page not found</h1>
+  </template>
+
+  <script>
+    class CCS404 extends Polymer.Element {
+      static get is() { return 'ccs-404'; }
+
+      static get properties() { return {
+
+      }}
+
+      static get observers() { return [
+
+      ]}
+    }
+
+    window.customElements.define(CCS404.is, CCS404);
+  </script>
+</dom-module>

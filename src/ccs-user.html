@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="ccs-data.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-user">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:slug"
+      data="{{routeData}}">
+    </app-route>
+
+    <ccs-data id="data"></ccs-data>
+
+    <paper-card heading="User">
+      <div class="card-content">
+        User Card --> [[routeData.slug]]
+        <br />
+        Name: [[user.name]]<br />
+        Dep: [[user.department]]
+      </div>
+      <div class="card-actions">
+        <paper-button>Share</paper-button>
+        <paper-button>Explore!</paper-button>
+      </div>
+    </paper-card>
+  </template>
+
+  <script>
+    class CCSUser extends Polymer.Element {
+      static get is() { return 'ccs-user'; }
+
+      static get properties() { return {
+        slug: String,
+        user: Object
+      }}
+
+      static get observers() { return [
+        '_userNameChanged(routeData.slug)'
+      ]}
+
+      _userNameChanged(name) {
+        // TODO: Check if this page is active
+        this.user = this.$.data.getUser(name)
+      }
+    }
+
+    window.customElements.define(CCSUser.is, CCSUser);
+  </script>
+</dom-module>

@@ -1,0 +1,39 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-user-list">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:slug"
+      data="{{routeData}}">
+    </app-route>
+
+    <h1>User List</h1>
+  </template>
+
+  <script>
+    class CCSUserList extends Polymer.Element {
+      static get is() { return 'ccs-user-list'; }
+
+      static get properties() { return {
+
+      }}
+
+      static get observers() { return [
+
+      ]}
+    }
+
+    window.customElements.define(CCSUserList.is, CCSUserList);
+  </script>
+</dom-module>

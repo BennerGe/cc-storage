@@ -1,0 +1,31 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-styles/element-styles/paper-material-styles.html">
+
+<dom-module id="shared-styles">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: var(--paper-blue-500);
+        --app-secondary-color: black;
+      }
+
+      a {
+        cursor: pointer; /* For links without href-attr */
+        text-decoration: none;
+        color: inherit;
+        outline: none; /* Hide orange box when links are active in Chrome (Android) */
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      paper-card {
+        display: block;
+        max-width: 800px;
+        width: 100%;
+      }
+    </style>
+  </template>
+</dom-module>

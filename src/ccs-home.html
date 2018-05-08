@@ -1,0 +1,43 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-home">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:slug"
+      data="{{routeData}}">
+    </app-route>
+
+    <paper-card heading="Home">
+      <div class="card-content">
+        <a href="/user/Testuser">Profil: Testuser</a>
+      </div>
+    </paper-card>
+  </template>
+
+  <script>
+    class CCSHome extends Polymer.Element {
+      static get is() { return 'ccs-home'; }
+
+      static get properties() { return {
+
+      }}
+
+      static get observers() { return [
+
+      ]}
+    }
+
+    window.customElements.define(CCSHome.is, CCSHome);
+  </script>
+</dom-module>
