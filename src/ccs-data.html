@@ -13,15 +13,31 @@
 
       ]}
 
+      // Return user by name (or ID?)
       getUser(name) {
-        return {
+        let users = this.getUsers();
+        return users.find(a => name === a.name.replace(/\W/g, ''));
+      }
+
+      // Return all users
+      getUsers() {
+        return [{
+          id: 0,
           avatar: "",
           name: "Testuser",
           telephone: "12345",
           email: "test@company.com",
           location: "Building A",
           department: "R&D"
-        }
+        }, {
+          id: 1,
+          avatar: "",
+          name: "2. Boy",
+          telephone: "54321",
+          email: "test2@company.com",
+          location: "Building B",
+          department: "Hausmeister"
+        }];
       }
     }
 

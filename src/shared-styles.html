@@ -21,10 +21,34 @@
         text-decoration: underline;
       }
 
+      iron-image {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid grey;
+        background-color: white;
+      }
+
       paper-card {
         display: block;
-        max-width: 800px;
         width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .load-more {
+        text-align: center;
+        color: var(--paper-grey-700);
+        cursor: pointer;
+        margin: 20px 0;
+      }
+
+      .load-more:hover {
+        text-decoration: underline;
+      }
+
+      .subtitle {
+        color: var(--paper-grey-700);
+        @apply --paper-font-caption;
       }
     </style>
   </template>

@@ -1,9 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 
 <link rel="import" href="ccs-data.html">
-
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="ccs-user">
@@ -12,6 +12,64 @@
       :host {
         display: block;
       }
+
+      .user-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .user-header h1 {
+        margin: 0 0 20px;
+      }
+
+      iron-image {
+        width: 200px;
+        height: 200px;
+      }
+
+      .avatar-wrapper {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .avatar-wrapper:hover .change-avatar-bg {
+        opacity: 0.8;
+        background-color: grey;
+      }
+      .avatar-wrapper:hover .change-avatar-text {
+        opacity: 1;
+        color: #FFF;
+        font-size: 40px;
+        font-weight: bold;
+      }
+      .change-avatar-bg,
+      .change-avatar-text {
+        border-radius: 50%;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: 202px;
+        height: 202px;
+        line-height: 202px;
+        text-align: center;
+      }
+      input[type=file] {
+        font-size: 202px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+      }
+      input[type=file], /* FF, IE7+, chrome (except button) */
+      input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+          cursor: pointer;
+      }
+
+      .user-meta {
+        margin-bottom: 10px;
+      }
+
     </style>
 
     <app-route
@@ -22,18 +80,49 @@
 
     <ccs-data id="data"></ccs-data>
 
-    <paper-card heading="User">
+    <div class="user-header">
+      <div class="avatar-wrapper">
+        <iron-image src="[[user.avatar]]" placeholder="/images/htwg.png" sizing="contain" fade preload></iron-image>
+        <div>
+          <div class="change-avatar-bg"></div>
+          <div class="change-avatar-text">Change</div>
+          <input id="fileInput" type="file" multiple accept="image/x-png,image/gif,image/jpeg,image/jpg" on-change="_fileChanged"/>
+        </div>
+      </div>
+      <h1>[[user.name]]</h1>
+    </div>
+
+    <paper-card>
       <div class="card-content">
-        User Card --> [[routeData.slug]]
-        <br />
-        Name: [[user.name]]<br />
-        Dep: [[user.department]]
+        <div class="user-meta">
+          <div class="subtitle">Name</div>
+          [[user.name]]
+        </div>
+        <div class="user-meta">
+          <div class="subtitle">Tel</div>
+          [[user.telephone]]
+        </div>
+        <div class="user-meta">
+          <div class="subtitle">Email</div>
+          [[user.email]]
+        </div>
+        <div class="user-meta">
+          <div class="subtitle">Department</div>
+          [[user.department]]
+        </div>
+        <div class="user-meta">
+          <div class="subtitle">Location</div>
+          [[user.location]]
+        </div>
       </div>
       <div class="card-actions">
-        <paper-button>Share</paper-button>
-        <paper-button>Explore!</paper-button>
+        <paper-button>Add contact (optionale Funktion)</paper-button>
       </div>
     </paper-card>
+
+    <div class="load-more" on-click="_loadFiles">
+      Load files from [[user.name]]
+    </div>
   </template>
 
   <script>
@@ -48,6 +137,10 @@
       static get observers() { return [
         '_userNameChanged(routeData.slug)'
       ]}
+
+      _loadFiles() {
+        console.log("loadFiles", this.user.name);
+      }
 
       _userNameChanged(name) {
         // TODO: Check if this page is active

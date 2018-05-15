@@ -1,7 +1,10 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 
+<link rel="import" href="ccs-data.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="ccs-user-list">
@@ -9,6 +12,23 @@
     <style include="shared-styles">
       :host {
         display: block;
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
+
+      paper-card:hover {
+        @apply --shadow-elevation-6dp;
+      }
+
+      .card-content {
+        display: flex;
+        align-items: center;
+      }
+
+      iron-image {
+        margin-right: 30px;
       }
     </style>
 
@@ -18,7 +38,21 @@
       data="{{routeData}}">
     </app-route>
 
-    <h1>User List</h1>
+    <ccs-data id="data"></ccs-data>
+
+    <template is="dom-repeat" items="{{users}}">
+      <a href$="[[_generateUserLink(item.name)]]">
+        <paper-card>
+          <div class="card-content">
+            <iron-image src="[[item.avatar]]" placeholder="/images/htwg.png" sizing="contain" fade preload></iron-image>
+            <div class="user">
+              [[item.name]]
+              <div class="subtitle">[[item.department]]</div>
+            </div>
+          </div>
+        </paper-card>
+      </a>
+    </template>
   </template>
 
   <script>
@@ -26,12 +60,23 @@
       static get is() { return 'ccs-user-list'; }
 
       static get properties() { return {
-
+        activated: Boolean,
+        users: Array
       }}
 
       static get observers() { return [
-
+        '_loadUsers(activated)'
       ]}
+
+      _loadUsers(activated) {
+        if(activated) {
+          this.users = this.$.data.getUsers();
+        }
+      }
+
+      _generateUserLink(name) {
+        return "/user/" + name.replace(/\W/g, '');
+      }
     }
 
     window.customElements.define(CCSUserList.is, CCSUserList);

@@ -53,6 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       iron-pages {
         margin: 30px;
+        max-width: 800px;
       }
 
       paper-fab {
@@ -99,6 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            selected="[[page]]"
            attr-for-selected="name"
            fallback-selection="ccs404"
+           selected-attribute="activated"
            role="main">
          <ccs-home name="home" route="[[subroute]]"></ccs-home>
          <ccs-file name="file" route="[[subroute]]"></ccs-file>
