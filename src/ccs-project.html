@@ -1,0 +1,66 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="ccs-404.html">
+<link rel="import" href="ccs-data.html">
+<link rel="import" href="ccs-project-files.html">
+<link rel="import" href="ccs-project-forum.html">
+<link rel="import" href="ccs-project-overview.html">
+<link rel="import" href="ccs-project-users.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-project">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:project/:page"
+      data="{{routeData}}">
+    </app-route>
+
+    <ccs-data id="data"></ccs-data>
+
+    <iron-pages
+       selected="[[routeData.page]]"
+       attr-for-selected="name"
+       fallback-selection="ccs404"
+       role="main">
+     <ccs-404 name="ccs404"></ccs-404>
+     <ccs-project-files name="files" project="[[routeData.project]]" files="[[files]]"></ccs-project-files>
+     <ccs-project-forum name="forum" project="[[routeData.project]]"></ccs-project-forum>
+     <ccs-project-overview name="overview" project="[[routeData.project]]"></ccs-project-overview>
+     <ccs-project-users name="users" project="[[routeData.project]]" users="[[users]]"></ccs-project-forum>
+   </iron-pages>
+  </template>
+
+  <script>
+    class CCSProject extends Polymer.Element {
+      static get is() { return 'ccs-project'; }
+
+      static get properties() { return {
+        files: Array,
+        users: Array
+      }}
+
+      static get observers() { return [
+        '_getProjectFiles(routeData.project)'
+      ]}
+
+      _getProjectFiles(project) {
+        this.files = this.$.data.getProjectFiles(project);
+      }
+
+      _getProjectFiles(project) {
+        this.users = this.$.data.getProjectUsers(project);
+      }
+    }
+
+    window.customElements.define(CCSProject.is, CCSProject);
+  </script>
+</dom-module>

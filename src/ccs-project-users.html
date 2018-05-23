@@ -1,0 +1,40 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="ccs-employees.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-project-users">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:slug"
+      data="{{routeData}}">
+    </app-route>
+
+    <ccs-employees users="[[users]]"></ccs-employees>
+  </template>
+
+  <script>
+    class CCSProjectUsers extends Polymer.Element {
+      static get is() { return 'ccs-project-users'; }
+
+      static get properties() { return {
+        users: Array
+      }}
+
+      static get observers() { return [
+        
+      ]}
+    }
+
+    window.customElements.define(CCSProjectUsers.is, CCSProjectUsers);
+  </script>
+</dom-module>

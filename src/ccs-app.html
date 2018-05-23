@@ -26,8 +26,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+
+<!-- Ensure Web Animations polyfill is loaded since neon-animation 2.0 doesn't import it -->
+  <link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
 
 <link rel="import" href="ccs-add-file.html">
+<link rel="import" href="ccs-data.html">
+<link rel="import" href="ccs-drawer-project.html">
+<link rel="import" href="ccs-tabs.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -36,7 +46,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="lazy-import" group="file-list" href="ccs-file-list.html">
   <link rel="lazy-import" group="file" href="ccs-file.html">
   <link rel="lazy-import" group="home" href="ccs-home.html">
-  <link rel="lazy-import" group="user-list" href="ccs-user-list.html">
+  <link rel="lazy-import" group="project" href="ccs-project.html">
+  <link rel="lazy-import" group="employees" href="ccs-employees.html">
   <link rel="lazy-import" group="user" href="ccs-user.html">
 
   <template>
@@ -50,8 +61,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       app-header {
-        color: #fff;
         background-color: var(--app-primary-color);
+      }
+
+      app-header [main-title],
+      app-header paper-icon-button {
+        color: #fff;
+      }
+
+      iron-selector a:hover {
+        text-decoration: none;
       }
 
       iron-pages {
@@ -64,6 +83,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         bottom: 20px;
         right: 20px;
         background-color: var(--app-primary-color);
+      }
+
+      .drawer-projects {
+        border: 1px var(--paper-grey-300);
+        border-style: solid none;
+        margin: 20px 0;
+        padding: 20px 0;
       }
     </style>
 
@@ -79,29 +105,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tail="{{subroute}}">
     </app-route>
 
+    <ccs-data id="data"></ccs-data>
+
     <app-drawer-layout fullbleed narrow="{{narrow}}">
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a href="[[rootPath]]" tabindex="-1">
+          <a href="[[rootPath]]/" tabindex="-1">
             <paper-icon-item>
               <iron-icon icon="apps" slot="item-icon"></iron-icon> <span>Home</span>
             </paper-icon-item>
           </a>
-          <a href="[[rootPath]]" tabindex="-1">
+
+          <div class="drawer-projects">
+            <template is="dom-repeat" items="{{projectList}}">
+              <ccs-drawer-project project="[[item]]" project-active="[[_isProjectActive(item.slug, subroute)]]"></ccs-drawer-project>
+            </template>
+          </div>
+
+          <a href="[[rootPath]]employees/" tabindex="-1">
             <paper-icon-item>
-              <iron-icon icon="communication:message" slot="item-icon"></iron-icon> <span>Discussions</span>
-            </paper-icon-item>
-          </a>
-          <a href="[[rootPath]]user-list" tabindex="-1">
-            <paper-icon-item>
-              <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Files</span>
-            </paper-icon-item>
-          </a>
-          <a href="[[rootPath]]user-list" tabindex="-1">
-            <paper-icon-item>
-              <iron-icon icon="social:people" slot="item-icon"></iron-icon> <span>Employees</span>
+              <iron-icon icon="social:people" slot="item-icon"></iron-icon><span>Employees</span>
             </paper-icon-item>
           </a>
         </iron-selector>
@@ -112,10 +137,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header slot="header" condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <a href="/">
+            <!--<a href="/">-->
               <div main-title>CCS Storage</div>
-            </a>
+            <!--</a>-->
+            <paper-menu-button>
+              <paper-icon-button icon="more-vert" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+              <paper-listbox slot="dropdown-content">
+                <paper-item>Add project</paper-item>
+                <paper-item>About CCS-Storage</paper-item>
+              </paper-listbox>
+            </paper-menu-button>
           </app-toolbar>
+          <ccs-tabs route="[[route]]"></ccs-tabs>
         </app-header>
 
         <iron-pages
@@ -127,8 +160,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          <ccs-home name="home" route="[[subroute]]"></ccs-home>
          <ccs-file name="file" route="[[subroute]]"></ccs-file>
          <ccs-user name="user" route="[[subroute]]"></ccs-user>
+         <ccs-project name="project" route="[[subroute]]"></ccs-project>
          <ccs-file-list name="file-list" route="[[subroute]]"></ccs-file-list>
-         <ccs-user-list name="user-list" route="[[subroute]]"></ccs-user-list>
+         <ccs-employees name="employees" route="[[subroute]]"></ccs-employees>
          <ccs-404 name="ccs404"></ccs-404 >
        </iron-pages>
 
@@ -149,21 +183,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       static get properties() { return {
         page: {
-            type: String,
-            reflectToAttribute: true,
-            observer: '_pageChanged',
-          },
-          routeData: Object,
-          subroute: Object,
-          // This shouldn't be necessary, but the Analyzer isn't picking up
-          // Polymer.Element#rootPath
-          rootPath: String,
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged',
+        },
+        routeData: Object,
+        subroute: Object,
+        // This shouldn't be necessary, but the Analyzer isn't picking up
+        // Polymer.Element#rootPath
+        rootPath: String,
+        projectList: Array
       }}
 
       static get observers() {
         return [
           '_routePageChanged(routeData.page)',
         ];
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.projectList = this.$.data.getProjectList();
+      }
+
+      _isProjectActive(slug, subroute) {
+        return slug === subroute.path.split('/')[1];
+
       }
 
       _openAddFileDialog() {

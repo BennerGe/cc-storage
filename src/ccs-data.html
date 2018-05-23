@@ -13,16 +13,37 @@
 
       ]}
 
+      _sanitizeString(string) {
+        return string.replace(/\W/g, '');
+      }
+
+      getProjectList() {
+        return [{
+          id: 0,
+          name: "Project 1",
+          slug: "project1",
+          num_files: 10,
+          num_users: 5
+        }, {
+          id: 1,
+          name: "Project 2",
+          slug: "project2",
+          num_files: 100,
+          num_users: 10
+        }];
+      }
+
       // Return user by name (or ID?)
       getUser(name) {
         let users = this.getUsers();
-        return users.find(a => name === a.name.replace(/\W/g, ''));
+        name = this._sanitizeString(name);
+        return users.find(a => name === this._sanitizeString(a.name));
       }
 
       // Return all users
       getUsers() {
         return [{
-          id: 0,
+          id: 1,
           avatar: "",
           name: "Testuser",
           telephone: "12345",
@@ -30,14 +51,58 @@
           location: "Building A",
           department: "R&D"
         }, {
-          id: 1,
+          id: 2,
           avatar: "",
           name: "2. Boy",
           telephone: "54321",
           email: "test2@company.com",
           location: "Building B",
           department: "Hausmeister"
+        }, {
+          id: 3,
+          avatar: "",
+          name: "3. Boy",
+          telephone: "999",
+          email: "test3@company.com",
+          location: "Building C",
+          department: "Hausmeister"
         }];
+      }
+
+      // Get project files
+      getProjectFiles(project) {
+        project = this._sanitizeString(project);
+        if(project == "project1") {
+          return [{
+            id: 0,
+            name: "File1.png",
+            upload_date: new Date(),
+            modified_date: new Date(),
+            size: 10231,
+            author: this.getUser("Testuser"),
+            description: "R&D"
+          }, {
+            id: 0,
+            name: "File1.png",
+            upload_date: new Date(),
+            modified_date: new Date(),
+            size: 10231,
+            author: this.getUser("2Boy"),
+            description: "R&D"
+          }];
+        }
+        return [];
+      }
+
+      // Get project files
+      getProjectUsers(project) {
+        project = this._sanitizeString(project);
+
+        let users = this.getUsers();
+        if(project == "project1") {
+          return [users[0]];
+        }
+        return users;
       }
     }
 

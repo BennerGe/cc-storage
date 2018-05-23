@@ -1,0 +1,77 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-tabs">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+
+      paper-tab a,
+      paper-tab a:hover {
+        padding: 0 10px;
+        @apply --layout-horizontal;
+        @apply --layout-center-center;
+        color: #fff;
+        text-decoration: none;
+      }
+    </style>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:section/:page"
+      data="{{routeData}}"
+      tail="{{tail}}">
+    </app-route>
+
+    <paper-tabs selected="0" hidden$="[[_areTabsHidden(routeData.section, route)]]">
+      <paper-tab link>
+        <a href="/[[routeData.section]]/[[routeData.page]]/overview/" tabindex="-1">Overview</a>
+      </paper-tab>
+      <paper-tab link>
+        <a href="/[[routeData.section]]/[[routeData.page]]/files/" tabindex="-1">Files</a>
+      </paper-tab>
+      <paper-tab link>
+        <a href="/[[routeData.section]]/[[routeData.page]]/users/" tabindex="-1">Users</a>
+      </paper-tab>
+      <paper-tab link>
+        <a href="/[[routeData.section]]/[[routeData.page]]/forum/" tabindex="-1">Forum</a>
+      </paper-tab>
+    </paper-tabs>
+  </template>
+
+  <script>
+    class CCSTabs extends Polymer.Element {
+      static get is() { return 'ccs-tabs'; }
+
+      static get properties() { return {
+
+      }}
+
+      static get observers() { return [
+
+      ]}
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+
+      _areTabsHidden(section, route) {
+        this._resize();
+        return section !== "project" || route.path === "/";
+      }
+
+      _resize() {
+        this.dispatchEvent(new CustomEvent('iron-resize', {
+          bubbles: true, composed: true
+        }));
+      }
+    }
+
+    window.customElements.define(CCSTabs.is, CCSTabs);
+  </script>
+</dom-module>

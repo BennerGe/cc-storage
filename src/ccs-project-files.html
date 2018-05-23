@@ -1,0 +1,58 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="ccs-project-files">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-route
+      route="[[route]]"
+      pattern="/:slug"
+      data="{{routeData}}">
+    </app-route>
+
+    <paper-card heading="Files">
+      <div class="card-content">
+        Files
+      </div>
+    </paper-card>
+
+    <template is="dom-repeat" items="{{files}}">
+      <a href$="[[_generateFileLink(item.name)]]">
+        <paper-card>
+          <div class="card-content">
+              [[item.name]]
+            </div>
+          </div>
+        </paper-card>
+      </a>
+    </template>
+  </template>
+
+  <script>
+    class CCSProjectFiles extends Polymer.Element {
+      static get is() { return 'ccs-project-files'; }
+
+      static get properties() { return {
+        files: Array
+      }}
+
+      static get observers() { return [
+
+      ]}
+
+      _generateFileLink(name) {
+
+      }
+    }
+
+    window.customElements.define(CCSProjectFiles.is, CCSProjectFiles);
+  </script>
+</dom-module>

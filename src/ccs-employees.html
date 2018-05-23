@@ -7,7 +7,7 @@
 <link rel="import" href="ccs-data.html">
 <link rel="import" href="shared-styles.html">
 
-<dom-module id="ccs-user-list">
+<dom-module id="ccs-employees">
   <template>
     <style include="shared-styles">
       :host {
@@ -56,8 +56,8 @@
   </template>
 
   <script>
-    class CCSUserList extends Polymer.Element {
-      static get is() { return 'ccs-user-list'; }
+    class CCSEmployees extends Polymer.Element {
+      static get is() { return 'ccs-employees'; }
 
       static get properties() { return {
         activated: Boolean,
@@ -79,6 +79,6 @@
       }
     }
 
-    window.customElements.define(CCSUserList.is, CCSUserList);
+    window.customElements.define(CCSEmployees.is, CCSEmployees);
   </script>
 </dom-module>

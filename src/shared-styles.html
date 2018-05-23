@@ -10,6 +10,10 @@
         --app-secondary-color: black;
       }
 
+      [hidden] {
+        display: none!important;
+      }
+
       a {
         cursor: pointer; /* For links without href-attr */
         text-decoration: none;
@@ -49,6 +53,15 @@
       .subtitle {
         color: var(--paper-grey-700);
         @apply --paper-font-caption;
+      }
+
+      .subtitle li {
+        display: inline-block;
+      }
+
+      .subtitle li:nth-child(n+2)::before {
+        content: '\002022';
+        margin: 0 5px;
       }
     </style>
   </template>
